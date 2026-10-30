@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ma Résidence – Signalements et changements de chambre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+<div class="util">
+  <div class="wrap">
+    <span>Service public étudiant</span>
+    <ul>
+      <li><a href="https://www.lescrous.fr">Les Crous</a></li>
+      <li><a href="https://etudiant.gouv.fr">Etudiant.gouv.fr</a></li>
+      <li><a href="https://messervices.etudiant.gouv.fr">Messervices.etudiant.gouv.fr</a></li>
+      <li><a href="#accessibilite">Accessibilité</a></li>
+    </ul>
+  </div>
+</div>
+<header class="top">
+  <div class="wrap bar">
+    <div class="brand">
+      <img class="logo" src="logo.png" alt="Logo">
+      <div><strong>Ma Résidence</strong><small>Signalements et changements de chambre</small></div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" aria-selected="true" data-tab="incident">Signaler un incident</button>
+      <button role="tab" aria-selected="false" data-tab="change">Changer de chambre</button>
+      <button role="tab" aria-selected="false" data-tab="mine">Mes demandes <span id="count" class="badge">0</span></button>
+      <button role="tab" aria-selected="false" data-tab="contact">Contact</button>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu" class="wrap">
+  <section class="hero">
+    <p class="crumb">Se loger › Je suis résident</p>
+    <h1>Un problème dans votre logement ? Dites-le-nous.</h1>
+    <p>Signalez un incident ou demandez un autre type de chambre. Vous suivez l’avancement de chaque demande depuis cette page.</p>
+  </section>
+  <aside class="notice" role="note">
+    <b>En cas de danger</b> (fuite importante, odeur de gaz, incendie), n’utilisez pas ce formulaire : appelez les secours (112) et prévenez l’accueil de votre résidence.
+  </aside>
+
+  <!-- INCIDENT -->
+  <section id="tab-incident" class="panel">
+    <form id="form-incident" novalidate>
+      <fieldset>
+        <legend>Quel est le problème ?</legend>
+        <div id="cats"></div>
+        <p class="err" data-for="category"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Où se situe-t-il ?</legend>
+        <div class="grid">
+          <label>Ville<select name="city" required></select></label>
+          <label>Nom de la résidence<input name="residence" list="dl-incident" placeholder="Saisissez le nom" autocomplete="off" required></label>
+          <label>Bâtiment<input name="building" placeholder="Ex. B" required></label>
+          <label>Numéro de chambre<input name="room" placeholder="Ex. 214" required></label>
+          <datalist id="dl-incident"></datalist>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Dans quelle mesure est-ce urgent ?</legend>
+        <div class="seg" id="urgency">
+          <label><input type="radio" name="urgency" value="Faible" checked><span>Gênant</span></label>
+          <label><input type="radio" name="urgency" value="Moyenne"><span>Important</span></label>
+          <label><input type="radio" name="urgency" value="Haute"><span>Urgent (santé, sécurité)</span></label>
+        </div>
+      </fieldset>
+
+      <label>Décrivez la situation
+        <textarea name="description" rows="4" minlength="15" placeholder="Depuis quand ? Où exactement dans la chambre ? Autres chambres touchées ?" required></textarea>
+      </label>
+      <label>Photo (facultatif)<input type="file" name="photo" accept="image/*"></label>
+      <button class="btn" type="submit">Envoyer le signalement</button>
+    </form>
+  </section>
+
+  <!-- CHANGE -->
+  <section id="tab-change" class="panel" hidden>
+    <form id="form-change" novalidate>
+      <fieldset>
+        <legend>Quelle chambre souhaitez-vous ?</legend>
+        <div class="choices rooms" id="rooms"></div>
+        <p class="err" data-for="target"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Votre chambre actuelle</legend>
+        <div class="grid">
+          <label>Ville<select name="city" required></select></label>
+          <label>Nom de la résidence<input name="residence" list="dl-change" placeholder="Saisissez le nom" autocomplete="off" required></label>
+          <label>Bâtiment<input name="building" placeholder="Ex. B" required></label>
+          <label>Chambre<input name="room" placeholder="Ex. 214" required></label>
+          <datalist id="dl-change"></datalist>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Vos préférences</legend>
+        <div class="grid">
+          <label>Ville souhaitée<select name="wantedCity"></select></label>
+          <label>Résidence souhaitée<input name="wanted" list="dl-wanted" placeholder="Facultatif" autocomplete="off"></label>
+          <datalist id="dl-wanted"></datalist>
+          <label>Motif
+            <select name="reason" required>
+              <option value="">Choisir…</option>
+              <option>Incident non résolu (cafards, punaises…)</option>
+              <option>Isolation / humidité / chauffage</option>
+              <option>Raisons financières</option>
+              <option>Envie de partager une chambre</option>
+              <option>Raisons de santé / handicap</option>
+              <option>Autre</option>
+            </select>
+          </label>
+        </div>
+        <label>Partenaire de chambre (facultatif)<input name="mate" placeholder="Nom ou numéro étudiant de la personne"></label>
+      </fieldset>
+
+      <label>Précisions
+        <textarea name="description" rows="3" placeholder="Toute information utile pour étudier votre demande"></textarea>
+      </label>
+      <label class="check"><input type="checkbox" name="linked"> Cette demande fait suite à un incident déjà signalé</label>
+      <button class="btn" type="submit">Envoyer la demande</button>
+    </form>
+  </section>
+
+  <!-- MINE -->
+  <section id="tab-mine" class="panel" hidden>
+    <div class="filters" id="filters">
+      <button class="chip on" data-f="all">Toutes</button>
+      <button class="chip" data-f="Incident">Incidents</button>
+      <button class="chip" data-f="Changement">Changements</button>
+    </div>
+    <div id="list"></div>
+    <p id="empty" class="empty" hidden>Aucune demande pour le moment. Commencez par signaler un incident ou demander un changement de chambre.</p>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="tab-contact" class="panel" hidden>
+    <h2 class="ptitle">Contact</h2>
+    <div class="contact">
+      <div class="cards">
+        <div class="card"><h3>Accueil de votre résidence</h3><p>Pour toute urgence ou une question pratique, adressez-vous d’abord à l’accueil.</p><p><b>Horaires :</b> à compléter</p></div>
+        <div class="card"><h3>Service logement</h3><p>Suivi des demandes de changement de chambre.</p><p><b>E-mail :</b> logement@exemple.fr<br><b>Téléphone :</b> 00 00 00 00 00</p></div>
+        <div class="card"><h3>Assistance sociale</h3><p>Une difficulté financière ou personnelle ? Un accompagnement existe.</p><p><b>Prise de rendez-vous :</b> à compléter</p></div>
+      </div>
+      <form id="form-contact" novalidate>
+        <fieldset><legend>Nous écrire</legend>
+          <div class="grid">
+            <label>Nom et prénom<input name="name" required></label>
+            <label>Adresse e-mail<input name="email" type="email" required></label>
+          </div>
+          <label>Sujet<select name="subject" required><option value="">Choisir…</option><option>Question sur une demande en cours</option><option>Problème avec le site</option><option>Autre question</option></select></label>
+          <label>Message<textarea name="message" rows="5" minlength="10" required></textarea></label>
+        </fieldset>
+        <button class="btn" type="submit">Envoyer le message</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="tab-mentions" class="panel doc" hidden>
+    <h2 class="ptitle">Mentions légales</h2>
+    <p><b>Éditeur :</b> à compléter (nom de l’organisme, adresse, directeur de la publication).</p>
+    <p><b>Hébergeur :</b> à compléter.</p>
+    <p>Ce site est un prototype réalisé dans le cadre d’un projet de management.</p>
+  </section>
+  <section id="tab-accessibilite" class="panel doc" hidden>
+    <h2 class="ptitle">Accessibilité</h2>
+    <p><b>État de conformité :</b> non évalué. Le site vise le niveau AA du RGAA : navigation au clavier, contrastes élevés, champs étiquetés.</p>
+    <p>Un problème d’accessibilité ? Écrivez-nous depuis la page <a href="#contact">Contact</a>.</p>
+  </section>
+  <section id="tab-donnees" class="panel doc" hidden>
+    <h2 class="ptitle">Données personnelles</h2>
+    <p>Dans cette version, vos demandes sont enregistrées uniquement dans votre navigateur et ne sont transmises à personne.</p>
+    <p>Une version en production devra préciser les données collectées, leur finalité, leur durée de conservation et vos droits (accès, rectification, suppression).</p>
+  </section>
+</main>
+
+<footer id="footer">
+  <div class="wrap foot">
+    <div><strong>Ma Résidence</strong><p>Plateforme de suivi des incidents et des demandes de changement de chambre en résidence universitaire.</p></div>
+    <ul>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact">Donnez votre avis</a></li>
+      <li><a href="#accessibilite">Accessibilité : non évaluée</a></li>
+      <li><a href="#donnees">Données personnelles</a></li>
+      <li><a href="#mentions">Mentions légales</a></li>
+    </ul>
+  </div>
+</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
